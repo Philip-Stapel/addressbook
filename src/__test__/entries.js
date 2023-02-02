@@ -1,26 +1,50 @@
-function addEntry(array, entry) {
-    array.push(entry);
-    return array;
-}
 
-function deleteEntry(array, id) {
-    return array.filter( entry => entry.id !== id)
-}
+const addEntry = (array, entry) => {
+  if (entry.name === "") {
 
-function updateEntry(array, id, updatedEntry) {
-    return array.map( entry => {
-        if(entry.id === id) {
-            return updatedEntry;
-        }else {
-            return entry
-        }
-    })
-}
+    return array
+  }
+  array.push(entry);
+  return array;
+};
+const deleteEntry = (array, id) => {
+  if (!Array.isArray(array)) {
+    throw new Error('Input must be an array');
+  }
+  const index = array.findIndex(el => el.id === id);
+  if (index === -1) {
+    throw new Error('no matching id');
+  }
+  array.splice(index, 1);
+  return array;
+};
 
-function getEntries(array) {
-    array.forEach(function(entry) {
-        console.log(entry)
-    });
-}
+const updateEntry = (array, id, updatedEntry) => {
+  const validDeletion = array.some(el => el.id === id);
+  if (validDeletion === false) {
+    throw new Error('no matching id');
+  }
+  return array.map(entry => {
+    if (entry.id === id) {
+      return updatedEntry;
+    } else {
+      return entry;
+    }
+  });
+};
 
-module.exports = { addEntry, deleteEntry, getEntries, updateEntry}
+const getEntries = (array) => {
+  if (array.length === 0) {
+    return array
+  }
+  array.forEach(function (entry) {
+    console.log(entry);
+  });
+};
+
+module.exports = {
+  addEntry,
+  deleteEntry,
+  getEntries,
+  updateEntry
+};
